@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { Outlet, NavLink } from "react-router-dom";
 import { Play, Pause, BookOpen, Users, Mail, Heart } from "lucide-react";
 import icon from "../assets/icon.jpg";
+import Chatbot from "../components/Chatbot";
 
 export default function MainLayout() {
   const audioRef = useRef(null);
@@ -177,6 +178,9 @@ export default function MainLayout() {
           </div>
         </div>
       </footer>
+
+      {/* Chatbot */}
+      <Chatbot />
     </div>
   );
 }
