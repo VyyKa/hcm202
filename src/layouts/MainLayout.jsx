@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Outlet, NavLink } from "react-router-dom";
-import { Play, Pause } from "lucide-react";
+import { Play, Pause, BookOpen, Users, Mail, Heart } from "lucide-react";
 import icon from "../assets/icon.jpg";
 
 export default function MainLayout() {
@@ -102,19 +102,77 @@ export default function MainLayout() {
 
       <footer className="mt-10 py-8">
         <div className="border-t pt-6 border-white/60">
-          <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+            {/* Cột 1: Dự án học thuật */}
             <div>
-              <div className="font-semibold">
-                Dự án: Tư tưởng Hồ Chí Minh về Nhà nước
+              <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+                <BookOpen size={18} className="text-primary" />
+                <span>Dự án học thuật</span>
               </div>
-              <div className="text-sm text-muted-slate">
-                Sinh viên / Nhóm - Trường Đại học • Năm học • Tài liệu tham
-                khảo: Hiến pháp, Di sản Hồ Chí Minh
+              <div className="mt-3 space-y-1.5 text-muted-slate">
+                <div>
+                  <span className="font-semibold">Môn:</span>{" "}
+                  <span>HCM202 - Tư tưởng Hồ Chí Minh</span>
+                </div>
+                <div>
+                  <span className="font-semibold">Trường:</span>{" "}
+                  <span>Đại học FPT - Campus Hồ Chí Minh</span>
+                </div>
+                <div>
+                  <span className="font-semibold">Học kỳ:</span>{" "}
+                  <span>Fall {new Date().getFullYear()}</span>
+                </div>
               </div>
             </div>
-            <div className="text-sm text-muted-slate">
-              © {new Date().getFullYear()} • Thiết kế &amp; triển khai bằng
-              React + Tailwind + Framer Motion
+
+            {/* Cột 2: Thông tin nhóm */}
+            <div>
+              <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+                <Users size={18} className="text-primary" />
+                <span>Thông tin nhóm</span>
+              </div>
+              <div className="mt-3 text-sm text-muted-slate">
+                <div>
+                  <span className="font-semibold">Nhóm:</span>{" "}
+                  <span>6 - 3W_HCM202_06</span>
+                </div>
+                <div className="mt-2 font-semibold">Thành viên:</div>
+                <ul className="mt-1 space-y-0.5">
+                  <li>• Hồ Tài Liên Vy Kha</li>
+                  <li>• Lê Tiến Đạt</li>
+                  <li>• Nguyễn Cao Trí</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Cột 3: Giảng viên */}
+            <div>
+              <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+                <Mail size={18} className="text-primary" />
+                <span>Giảng viên</span>
+              </div>
+              <div className="mt-3 text-sm space-y-1.5 text-muted-slate">
+                <div>
+                  <span className="font-semibold">Hướng dẫn:</span>{" "}
+                  <span>Đoàn Thị Ngân (NganDT31)</span>
+                </div>
+                <p className="text-xs leading-relaxed">
+                  Cảm ơn cô đã hướng dẫn và hỗ trợ nhóm trong quá trình thực
+                  hiện dự án.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="max-w-6xl mx-auto px-4 mt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted-slate">
+            <div>
+              © {new Date().getFullYear()} · Sản phẩm sáng tạo môn HCM202 - Nhóm
+              6 - Đại học FPT
+            </div>
+            <div className="flex items-center gap-2">
+              <span>Made with</span>
+              <Heart size={14} className="text-primary" />
+              <span>in FPTU</span>
             </div>
           </div>
         </div>
@@ -122,5 +180,6 @@ export default function MainLayout() {
     </div>
   );
 }
+
 
 
