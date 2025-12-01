@@ -1,0 +1,86 @@
+/* Basic reset + Google Fonts + Tailwind directives */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@400;700&display=swap');
+
+:root{
+  /* Theme tuned to match slide colors */
+  --bg: #F6E6C9;        /* warm cream background */
+  --primary: #C45A5A;   /* muted red/pink brush tone */
+  --text: #3C2A2A;      /* softer dark brown text */
+  --accent: #E3A35B;    /* warm orange accent */
+}
+
+/* Reset (minimal) */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html,body,#root {
+  height: 100%;
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+/* Tailwind base */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Utilities for flip cards & timeline */
+.flip-card {
+  perspective: 1200px;
+}
+.flip-card-inner {
+  transition: transform 0.75s;
+  transform-style: preserve-3d;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.flip-card-front,
+.flip-card-back {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+}
+.flip-card-front {
+  transform: rotateY(0deg);
+}
+.flip-card-back {
+  transform: rotateY(180deg);
+  transform-origin: center;
+  background: white;
+}
+
+/* When flipped (class applied) */
+.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* timeline connector */
+.timeline-line {
+  width: 3px;
+  background: rgba(26,26,26,0.08);
+  border-radius: 99px;
+}
+
+/* small helpers */
+.section-title {
+  font-family: 'Merriweather', serif;
+}
