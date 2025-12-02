@@ -139,6 +139,58 @@ export default function Home() {
         </motion.div>
       </section>
 
+      {/* SECTION 4 - Giới thiệu về Cuộc đời Bác Hồ */}
+      <section className="mt-16">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          variants={container}
+        >
+          <motion.div
+            variants={fadeUp}
+            className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl p-8 border border-primary/20"
+          >
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+              <div className="flex-1">
+                <h2 className="text-2xl section-title font-bold mb-3">
+                  Tìm hiểu về Cuộc đời Chủ tịch Hồ Chí Minh
+                </h2>
+                <p className="text-muted-slate mb-4 max-w-2xl">
+                  Khám phá hành trình 79 năm của Người từ một người con yêu nước
+                  đến vị lãnh tụ vĩ đại, người đã tìm ra con đường giải phóng dân
+                  tộc và xây dựng đất nước độc lập, tự do, hạnh phúc.
+                </p>
+                <Link
+                  to="/biography"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors duration-200 shadow-sm"
+                >
+                  <span>Xem dòng thời gian cuộc đời</span>
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </Link>
+              </div>
+              <div className="w-full md:w-48 flex-shrink-0">
+                <div className="aspect-square rounded-xl bg-primary/5 border-2 border-primary/20 flex items-center justify-center">
+                  <Clock size={48} className="text-primary/40" />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </section>
+
       {/* SECTION 1 - Nhà nước Dân chủ */}
       <section id="section1" className="mt-12">
         <motion.div
@@ -386,57 +438,6 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* SECTION 4 - Giới thiệu về Cuộc đời Bác Hồ */}
-      <section className="mt-16">
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          variants={container}
-        >
-          <motion.div
-            variants={fadeUp}
-            className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl p-8 border border-primary/20"
-          >
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-              <div className="flex-1">
-                <h2 className="text-2xl section-title font-bold mb-3">
-                  Tìm hiểu về Cuộc đời Chủ tịch Hồ Chí Minh
-                </h2>
-                <p className="text-muted-slate mb-4 max-w-2xl">
-                  Khám phá hành trình 79 năm của Người từ một người con yêu nước
-                  đến vị lãnh tụ vĩ đại, người đã tìm ra con đường giải phóng dân
-                  tộc và xây dựng đất nước độc lập, tự do, hạnh phúc.
-                </p>
-                <Link
-                  to="/biography"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors duration-200 shadow-sm"
-                >
-                  <span>Xem dòng thời gian cuộc đời</span>
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </Link>
-              </div>
-              <div className="w-full md:w-48 flex-shrink-0">
-                <div className="aspect-square rounded-xl bg-primary/5 border-2 border-primary/20 flex items-center justify-center">
-                  <Clock size={48} className="text-primary/40" />
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      </section>
     </>
   );
 }
