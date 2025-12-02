@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import LearnMore from "./pages/LearnMore";
 import Game from "./pages/Game";
 import StoryFlipbook from "./pages/StoryFlipbook";
+import Biography from "./pages/Biography";
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/learn-more" element={<LearnMore />} />
+          <Route path="/biography" element={<Biography />} />
           <Route path="/game" element={<Game />} />
           <Route path="/flipbook" element={<StoryFlipbook />} />
         </Route>

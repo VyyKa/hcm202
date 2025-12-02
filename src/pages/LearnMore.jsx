@@ -14,18 +14,14 @@ export default function LearnMore() {
         initial="hidden"
         animate="show"
         variants={{ hidden: {}, show: { transition: { staggerChildren: 0.14 } } }}
-        className="max-w-3xl"
+        className="max-w-3xl mx-auto w-full"
       >
         <motion.h1
           variants={fadeUp}
-          className="text-3xl section-title font-bold flex items-center gap-3"
+          className="text-3xl section-title font-bold"
         >
-          <span>
-            Tìm hiểu thêm về Tư tưởng Hồ Chí Minh về Nhà nước
-          </span>
-          <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-primary text-white">
-            <ShieldCheck size={18} />
-          </span>
+          Tìm hiểu thêm về Tư tưởng Hồ Chí Minh về{" "}
+          <span className="whitespace-nowrap">Nhà nước</span>
         </motion.h1>
 
         <motion.p

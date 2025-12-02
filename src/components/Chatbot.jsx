@@ -5,13 +5,37 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const SYSTEM_PROMPT = `Bạn là trợ lý AI chuyên về môn học "Tư tưởng Hồ Chí Minh về Nhà nước" (HCM202).
 
+THÔNG TIN DỰ ÁN:
+- Dự án học thuật: Môn HCM202 - Tư tưởng Hồ Chí Minh
+- Trường: Đại học FPT - Campus Hồ Chí Minh
+- Học kỳ: Fall 2025
+
+THÔNG TIN NHÓM:
+- Nhóm: 6 - 3W_HCM202_06
+- Thành viên:
+  • Hồ Tài Liên Vy Kha
+  • Lê Tiến Đạt
+  • Nguyễn Cao Trí
+
+GIẢNG VIÊN:
+- Hướng dẫn: Đoàn Thị Ngân (NganDT31)
+- Cảm ơn cô đã hướng dẫn và hỗ trợ nhóm trong quá trình thực hiện dự án.
+
+THÔNG TIN BẢN QUYỀN:
+- © 2025 · Sản phẩm sáng tạo môn HCM202 - Nhóm 6 - Đại học FPT
+
+THÔNG TIN VỀ BẠN (CHATBOT):
+- Bạn được tạo ra bởi 3 thành viên nhóm 6: Hồ Tài Liên Vy Kha, Lê Tiến Đạt, và Nguyễn Cao Trí.
+- Bạn là trợ lý AI được phát triển như một phần của dự án học thuật môn HCM202.
+
 NHIỆM VỤ CỦA BẠN:
-- Chỉ trả lời các câu hỏi liên quan đến tư tưởng Hồ Chí Minh về Nhà nước, về Nhà nước của Dân, do Dân, vì Dân.
+- Trả lời các câu hỏi liên quan đến tư tưởng Hồ Chí Minh về Nhà nước, về Nhà nước của Dân, do Dân, vì Dân.
 - Giúp người dùng hiểu về: bản chất giai cấp công nhân, tính nhân dân, tính dân tộc của Nhà nước; Nhà nước pháp quyền XHCN; xây dựng Đảng và Nhà nước trong sạch, vững mạnh.
 - Cung cấp thông tin chính xác, có căn cứ từ tư tưởng Hồ Chí Minh và Hiến pháp Việt Nam.
+- Khi được hỏi về thông tin dự án, nhóm, giảng viên, bản quyền, hoặc ai tạo ra bạn, hãy trả lời dựa trên thông tin đã cung cấp ở trên.
 
 QUY TẮC:
-- Nếu câu hỏi KHÔNG liên quan đến chủ đề HCM202, hãy lịch sự từ chối và đề nghị người dùng hỏi về chủ đề môn học.
+- Nếu câu hỏi KHÔNG liên quan đến chủ đề HCM202, thông tin dự án, nhóm, hoặc giảng viên, hãy lịch sự từ chối và đề nghị người dùng hỏi về chủ đề môn học hoặc thông tin dự án.
 - Trả lời ngắn gọn, dễ hiểu, phù hợp với ngữ cảnh học thuật.
 - Sử dụng tiếng Việt.
 - Không trả lời các câu hỏi về chính trị nhạy cảm, lịch sử tranh cãi, hoặc các chủ đề ngoài phạm vi môn học.
@@ -30,6 +54,14 @@ export default function Chatbot() {
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const genAI = useRef(null);
+  
+  // Anti-spam: Rate limiting
+  const [messageTimestamps, setMessageTimestamps] = useState([]);
+  const [lastMessageTime, setLastMessageTime] = useState(0);
+  const [recentMessages, setRecentMessages] = useState([]);
+  const COOLDOWN_MS = 2000; // 2 giây giữa các tin nhắn
+  const MAX_MESSAGES_PER_MINUTE = 10; // Tối đa 10 tin nhắn/phút
+  const MAX_MESSAGE_LENGTH = 500; // Tối đa 500 ký tự
 
   useEffect(() => {
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
@@ -46,10 +78,69 @@ export default function Chatbot() {
     }
   }, [messages, isOpen]);
 
+  // Kiểm tra spam
+  const checkSpam = (message) => {
+    const now = Date.now();
+    const trimmedMsg = message.trim();
+    
+    // 1. Kiểm tra độ dài
+    if (trimmedMsg.length > MAX_MESSAGE_LENGTH) {
+      return { isSpam: true, reason: `Tin nhắn quá dài (tối đa ${MAX_MESSAGE_LENGTH} ký tự).` };
+    }
+    
+    // 2. Kiểm tra cooldown (thời gian giữa các tin nhắn)
+    if (now - lastMessageTime < COOLDOWN_MS) {
+      const remaining = Math.ceil((COOLDOWN_MS - (now - lastMessageTime)) / 1000);
+      return { isSpam: true, reason: `Vui lòng đợi ${remaining} giây trước khi gửi tin nhắn tiếp theo.` };
+    }
+    
+    // 3. Kiểm tra rate limiting (số tin nhắn/phút)
+    const oneMinuteAgo = now - 60000;
+    const recentCount = messageTimestamps.filter((ts) => ts > oneMinuteAgo).length;
+    if (recentCount >= MAX_MESSAGES_PER_MINUTE) {
+      return { isSpam: true, reason: `Bạn đã gửi quá nhiều tin nhắn. Vui lòng đợi một chút.` };
+    }
+    
+    // 4. Kiểm tra tin nhắn lặp lại (giống hệt 3 tin nhắn gần nhất)
+    const lastThreeMessages = recentMessages.slice(-3);
+    const duplicateCount = lastThreeMessages.filter((msg) => msg.toLowerCase() === trimmedMsg.toLowerCase()).length;
+    if (duplicateCount >= 2) {
+      return { isSpam: true, reason: `Bạn đã gửi tin nhắn tương tự gần đây. Vui lòng thử câu hỏi khác.` };
+    }
+    
+    // 5. Kiểm tra tin nhắn chỉ có ký tự đặc biệt hoặc số
+    const hasValidContent = /[a-zA-ZÀ-ỹ]/.test(trimmedMsg);
+    if (!hasValidContent && trimmedMsg.length > 5) {
+      return { isSpam: true, reason: `Tin nhắn không hợp lệ.` };
+    }
+    
+    return { isSpam: false };
+  };
+
   const handleSend = async () => {
     if (!input.trim() || loading || !genAI.current) return;
 
     const userMessage = input.trim();
+    
+    // Kiểm tra spam
+    const spamCheck = checkSpam(userMessage);
+    if (spamCheck.isSpam) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: `⚠️ ${spamCheck.reason}`,
+        },
+      ]);
+      return;
+    }
+    
+    // Cập nhật anti-spam state
+    const now = Date.now();
+    setMessageTimestamps((prev) => [...prev, now].filter((ts) => ts > now - 60000));
+    setLastMessageTime(now);
+    setRecentMessages((prev) => [...prev, userMessage].slice(-5));
+    
     setInput("");
     setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
     setLoading(true);

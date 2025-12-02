@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { BookOpen, Clock } from "lucide-react";
+import { Link } from "react-router-dom";
 import anhbacho from "../assets/anhbacho.jpg";
 
 const container = {
@@ -26,7 +27,7 @@ function FlipCard({ frontTitle, backText }) {
       }`}
       onClick={() => setFlipped((s) => !s)}
     >
-      <div className="flip-card-inner bg-white shadow-soft-lg rounded-2xl">
+      <div className="flip-card-inner bg-white shadow-soft-lg rounded-2xl hover:bg-primary/20 transition-colors duration-200 cursor-pointer">
         <div className="flip-card-front p-6 text-center flex flex-col items-center justify-center">
           <h3 className="text-lg font-semibold text-slate-900">
             {frontTitle}
@@ -41,24 +42,31 @@ function FlipCard({ frontTitle, backText }) {
   );
 }
 
-function TimelineItem({ year, title, content, i }) {
+function TimelineItem({ year, title, content, i, isLast }) {
   return (
     <motion.div
       initial={{ opacity: 0, x: -30 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, amount: 0.4 }}
       transition={{ duration: 0.6, delay: i * 0.08 }}
-      className="relative mb-10 flex gap-4"
+      className="relative flex gap-4"
     >
-      <div className="flex-shrink-0">
-        <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shadow">
+      <div className="flex-shrink-0 flex flex-col items-center">
+        <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shadow z-10">
           <Clock size={18} />
         </div>
+        {!isLast && (
+          <div className="w-0.5 h-full bg-primary/30 mt-2 min-h-[60px]" />
+        )}
       </div>
-      <div className="flex-1">
-        <div className="text-sm font-semibold section-title">
-          {title}{" "}
-          <span className="text-xs text-muted-slate ml-2">({year})</span>
+      <div className="flex-1 pb-10">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">
+            {year}
+          </span>
+          <div className="text-sm font-semibold section-title">
+            {title}
+          </div>
         </div>
         <p className="mt-2 text-sm text-muted-slate">{content}</p>
       </div>
@@ -112,7 +120,7 @@ export default function Home() {
               </a>
               <a
                 href="/flipbook"
-                className="px-4 py-2 rounded-lg border border-primary text-primary hover:bg-primary/10 hover:border-primary hover:text-primary transition-colors duration-200"
+                className="px-4 py-2 rounded-lg border border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200"
               >
                 Flipbook câu chuyện
               </a>
@@ -240,37 +248,35 @@ export default function Home() {
 
           <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="col-span-2 bg-white p-6 rounded-2xl shadow-soft-lg">
-              <div className="flex gap-6">
-                <div className="hidden lg:flex flex-col items-center">
-                  <div className="timeline-line h-full" />
-                </div>
-                <div className="flex-1">
-                  <TimelineItem
-                    i={0}
-                    year="1946"
-                    title="Hiến pháp 1946"
-                    content="Khẳng định quyền làm chủ của nhân dân, mở đầu cho việc xây dựng Nhà nước Việt Nam Dân chủ Cộng hòa – nhà nước dân chủ nhân dân đầu tiên ở Đông Nam Á."
-                  />
-                  <TimelineItem
-                    i={1}
-                    year="1959"
-                    title="Bổ sung nguyên tắc pháp quyền"
-                    content="Khẳng định rõ Nhà nước dân chủ nhân dân dựa trên nền tảng liên minh công – nông, do giai cấp công nhân lãnh đạo; thể chế hoá nhiều nguyên tắc pháp quyền xã hội chủ nghĩa."
-                  />
-                  <TimelineItem
-                    i={2}
-                    year="Nhiều giai đoạn"
-                    title="Đạo đức và Pháp luật"
-                    content="Hồ Chí Minh nhấn mạnh mối quan hệ giữa đạo đức và pháp luật: pháp luật phải bảo vệ người lương thiện, trừng trị kẻ xấu, đồng thời góp phần giáo dục, cảm hoá con người."
-                  />
-                </div>
+              <div className="flex-1">
+                <TimelineItem
+                  i={0}
+                  year="1946"
+                  title="Hiến pháp 1946"
+                  content="Khẳng định quyền làm chủ của nhân dân, mở đầu cho việc xây dựng Nhà nước Việt Nam Dân chủ Cộng hòa – nhà nước dân chủ nhân dân đầu tiên ở Đông Nam Á."
+                  isLast={false}
+                />
+                <TimelineItem
+                  i={1}
+                  year="1959"
+                  title="Bổ sung nguyên tắc pháp quyền"
+                  content="Khẳng định rõ Nhà nước dân chủ nhân dân dựa trên nền tảng liên minh công – nông, do giai cấp công nhân lãnh đạo; thể chế hoá nhiều nguyên tắc pháp quyền xã hội chủ nghĩa."
+                  isLast={false}
+                />
+                <TimelineItem
+                  i={2}
+                  year="Nhiều giai đoạn"
+                  title="Đạo đức và Pháp luật"
+                  content="Hồ Chí Minh nhấn mạnh mối quan hệ giữa đạo đức và pháp luật: pháp luật phải bảo vệ người lương thiện, trừng trị kẻ xấu, đồng thời góp phần giáo dục, cảm hoá con người."
+                  isLast={true}
+                />
               </div>
             </div>
 
-            <div className="bg-cream p-6 rounded-2xl shadow-soft-lg">
+            <div className="bg-white p-6 rounded-2xl shadow-soft-lg">
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-md bg-primary text-white flex items-center justify-center">
-                  <BookOpen size={18} />
+                <div className="w-10 h-10 rounded-md bg-primary text-white flex items-center justify-center flex-shrink-0">
+                  <BookOpen size={18} className="flex-shrink-0" />
                 </div>
                 <div>
                   <h4 className="font-semibold">Nguyên tắc</h4>
@@ -374,6 +380,58 @@ export default function Home() {
               </motion.div>
               <div className="absolute -right-8 -top-8 opacity-30 text-9xl font-bold text-primary select-none">
                 C
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* SECTION 4 - Giới thiệu về Cuộc đời Bác Hồ */}
+      <section className="mt-16">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          variants={container}
+        >
+          <motion.div
+            variants={fadeUp}
+            className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl p-8 border border-primary/20"
+          >
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+              <div className="flex-1">
+                <h2 className="text-2xl section-title font-bold mb-3">
+                  Tìm hiểu về Cuộc đời Chủ tịch Hồ Chí Minh
+                </h2>
+                <p className="text-muted-slate mb-4 max-w-2xl">
+                  Khám phá hành trình 79 năm của Người từ một người con yêu nước
+                  đến vị lãnh tụ vĩ đại, người đã tìm ra con đường giải phóng dân
+                  tộc và xây dựng đất nước độc lập, tự do, hạnh phúc.
+                </p>
+                <Link
+                  to="/biography"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors duration-200 shadow-sm"
+                >
+                  <span>Xem dòng thời gian cuộc đời</span>
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </Link>
+              </div>
+              <div className="w-full md:w-48 flex-shrink-0">
+                <div className="aspect-square rounded-xl bg-primary/5 border-2 border-primary/20 flex items-center justify-center">
+                  <Clock size={48} className="text-primary/40" />
+                </div>
               </div>
             </div>
           </motion.div>

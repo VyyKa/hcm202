@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#C45A5A",      // muted red/pink, gần màu mảng brush
+        primary: "#8B3A3A",      // đỏ đậm hơn
         cream: "#F6E6C9",        // warm cream, gần nền slide
         slate: "#3C2A2A",        // dark brown text
         accent: "#E3A35B",       // warm orange accent
