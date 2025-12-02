@@ -1,34 +1,35 @@
-import React, { useRef, useState } from "react";
-import { Outlet, NavLink } from "react-router-dom";
-import { Play, Pause, BookOpen, Users, Mail, Heart } from "lucide-react";
-import icon from "../assets/icon.jpg";
-import Chatbot from "../components/Chatbot";
+import React, { useRef, useState } from "react"
+import { Outlet, NavLink, useLocation } from "react-router-dom"
+import { Play, Pause, BookOpen, Users, Mail, Heart } from "lucide-react"
+import icon from "../assets/icon.jpg"
+import Chatbot from "../components/Chatbot"
 
 export default function MainLayout() {
-  const audioRef = useRef(null);
-  const [playing, setPlaying] = useState(false);
+  const audioRef = useRef(null)
+  const [playing, setPlaying] = useState(false)
+  const location = useLocation()
 
   function toggleAudio() {
-    const a = audioRef.current;
-    if (!a) return;
+    const a = audioRef.current
+    if (!a) return
     if (playing) {
-      a.pause();
-      setPlaying(false);
+      a.pause()
+      setPlaying(false)
     } else {
-      a.volume = 0.2;
-      const p = a.play();
+      a.volume = 0.2
+      const p = a.play()
       if (p !== undefined) {
         p.then(() => setPlaying(true)).catch(() => {
-          setPlaying(false);
-        });
+          setPlaying(false)
+        })
       } else {
-        setPlaying(true);
+        setPlaying(true)
       }
     }
   }
 
   const linkBase =
-    "text-sm px-3 py-1.5 rounded-lg hover:bg-white/70 transition inline-flex items-center";
+    "text-sm px-3 py-1.5 rounded-lg hover:bg-white/70 transition inline-flex items-center"
 
   return (
     <div className="min-h-screen bg-cream text-slate-900 antialiased flex flex-col">
@@ -187,11 +188,8 @@ export default function MainLayout() {
         </div>
       </footer>
 
-      {/* Chatbot */}
-      <Chatbot />
+      {/* Chatbot: ẩn trên trang Trò chơi */}
+      {location.pathname !== "/game" && <Chatbot />}
     </div>
-  );
+  )
 }
-
-
-
