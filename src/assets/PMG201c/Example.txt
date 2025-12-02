@@ -1,0 +1,74 @@
+Request 1:
+- Project Sponsor
++ Impact: Provides funding and approves major decisions. 
++ Strategy to Manage: Keep them regularly updated with reports; involve them in key milestone reviews.
+- Development Team 
++ Impact: Builds the platform features (registration, payment integration, etc.). 
++ Strategy to Manage: Daily standups and sprint demos; remove blockers quickly.
+- Vendors 
++ Impact: Will use the platform to sell products; their adoption is critical. 
++ Strategy to Manage: Gather feedback early; offer beta-testing opportunities.
+- Payment Providers 
++ Impact: Need to be integrated smoothly for successful transactions. 
++ Strategy to Manage: Constant communication; early technical alignment sessions.
+
+Request 2:
+- Payment gateway integration delays
++ Possibility: Medium
++ Impact: High
++ Mitigation Strategy: Early technical meetings with providers; mock testing.
+- Platform scalability issues (e.g. traffic spikes)
++ Possibility: High
++ Impact: High
++ Mitigation Strategy: Load testing early; use scalable cloud infrastructure.
+- Poor vendor adoption
++ Possibility: Medium
++ Impact: High
++ Mitigation Strategy: Vendor onboarding campaigns; simple UX/UI design.
+- Security breach (due to many transactions)
++ Possibility: Low
++ Impact: Very High
++ Mitigation Strategy: Penetration testing; implement strong encryption standards.
+
+Request 3:
+a, 
+Start -> A -> D -> E -> End
+Start -> A -> D -> G -> End
+Start -> B -> F -> G -> End
+Start -> C -> H -> I -> End
+b, 
+Start -> A -> D -> E -> End = 17 days
+Start -> A -> D -> G -> End = 15 days
+Start -> B -> F -> G -> End = 12 days
+Start -> C -> H -> I -> End = 14 days
+So that, Minimum project duration = 17 days and Critical Path = Start -> A -> D -> E -> End
+c,  Activities with the most flexibility is: Activities B, F, C, H, and I. Because their paths are shorter than the critical path and have slack.
+d, There are four solutions to speed up the project:
+- Fast-tracking: Start activity E or G in parallel with D if possible (overlapping work, but it increases risk).
+- Crashing: Add extra resources to D (example: more developers or support) to finish it faster — but this may cost more.
+- Reduce scope (de-scope): Drop some non-critical features (maybe minor vendor customization) to save time — must get sponsor approval.
+- Overtime/Extra Shifts: Ask the team to work extra hours temporarily to recover time (only if morale and budget allow).
+
+Request 4:
+We have: 
+- EV (Earned Value) = $300,000
+- AC (Actual Cost) = $400,000
+- PV (Planned Value) = $500,000
+From which, we can calculate:
+- CPI (Cost Performance Index) = EV / AC = 300,000 / 400,000 = 0.75
+- SPI (Schedule Performance Index) = EV / PV = 300,000 / 500,000 = 0.6
+With the above results:
+- CPI = 0.75 -> Cost efficiency is poor (you're only getting $0.75 value for every $1 spent).
+- SPI = 0.6 -> Project is way behind schedule (only 60% progress compared to plan).
+Forecast to complete:
+- BAC (Budget at Completion) = $800,000
+- EAC (Estimate at Completion) = BAC / CPI = 800,000 ÷ 0.75 = $1,066,667
+=> We will spend $1,066,667 instead of $800,000.
+Time to complete:
+- Originally 6 months planned.
+- SPI = 0.6 means it will take about 1 / 0.6 x 6 = 1.67 x 6 ≈ 10 months
+=> Estimated project duration ≈ 10 months
+Summary about current situation:
+- Cost: Over budget (CPI < 1)
+- Schedule: Severely delayed (SPI < 1)
+- Action needed: Rebaseline schedule, add resources, reduce scope, or fast-track some work.

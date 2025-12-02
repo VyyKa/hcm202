@@ -1,20 +1,28 @@
 import React, { useState, useEffect, useRef, forwardRef } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import HTMLFlipBook from "react-pageflip";
+import coverAudio from "../audio/cover.mp3";
+import page1Audio from "../audio/page-1.mp3";
+import page2Audio from "../audio/page-2.mp3";
+import page3Audio from "../audio/page-3.mp3";
+import page4Audio from "../audio/page-4.mp3";
+import page5Audio from "../audio/page-5.mp3";
+import page6Audio from "../audio/page-6.mp3";
+import endAudio from "../audio/end.mp3";
 
 const pages = [
   {
     id: 0,
     type: "cover",
     title: "",
-    subtitle: "Câu chuyện Chiếc ghế và lòng dân dưới đây là một lời nhắc nhở sâu sắc về những giá trị cốt lõi ấy, được kể lại qua lăng kính của những người đã và đang cống hiến",
+    subtitle: "Câu chuyện Chiếc ghế và lòng dân dưới đây là một lời nhắc nhở sâu sắc về những giá trị cốt lõi, được kể lại qua lăng kính của những người đã và đang cống hiến",
     image: "/pages/start.png",
     audio: "Chào bạn đọc thân mến, Trong hành trình xây dựng và phát triển đất nước, tư tưởng Hồ Chí Minh về đạo đức cách mạng, về mối quan hệ giữa quan và dân luôn là kim chỉ nam soi sáng. Câu chuyện Chiếc ghế và lòng dân dưới đây là một lời nhắc nhở sâu sắc về những giá trị cốt lõi ấy, được kể lại qua lăng kính của những người đã và đang cống hiến. Mời bạn cùng lắng nghe"
   },
   {
     id: 1,
     title: "",
-    content: "Khi người phụ nữ cất lời về lá đơn khiếu nại đất đai, ông chỉ hờ hững đáp lời mà không hề ngẩng mặt. Sự coi thường thể hiện rõ rệt, biến văn phòng tiếp dân thành một nơi xa cách, đầy quyền lực và sự lạnh nhạt",
+    content: "Khi người phụ nữ cất lời về lá đơn khiếu nại đất đai, ông Hách-chủ tịch xã, chỉ hờ hững đáp lời mà không hề ngẩng mặt. Sự coi thường thể hiện rõ rệt, biến văn phòng tiếp dân thành một nơi xa cách, đầy quyền lực và sự lạnh nhạt",
     image: "/pages/page1.png",
     audio: "Trong căn phòng tiếp dân của Ủy ban xã, không khí luôn đặc quánh sự chờ đợi và lo lắng. Hôm nay cũng vậy, một người phụ nữ với những xấp giấy tờ trên tay đứng rụt rè, đôi mắt dõi về phía chiếc bàn làm việc. Ông Hách, vị Chủ tịch xã, đang ngồi vắt chân, dán mắt vào màn hình điện thoại. Khi người phụ nữ cất lời về lá đơn khiếu nại đất đai, ông chỉ hờ hững đáp lời mà không hề ngẩng mặt. Sự coi thường thể hiện rõ rệt, biến văn phòng tiếp dân thành một nơi xa cách, đầy quyền lực và sự lạnh nhạt. Ông Hách tự cho mình là người quyết định tất cả, gạt bỏ mọi thắc mắc của người dân bằng giọng điệu hách dịch. Ông cho rằng luật nằm trong tay ông, và người dân chỉ biết nghe theo. Ông hùng hồn tuyên bố: Tôi là người đứng đầu ở đây, tôi quyết lúc nào thì được lúc đấy. Dân thì biết gì mà luật với lá. Các người bầu tôi lên, giờ tôi có quyền."
   },
@@ -49,7 +57,7 @@ const pages = [
   {
     id: 6,
     title: "",
-    content: "Ông Hách cam kết sẽ sửa chữa sai lầm, lấy lại niềm tin từ dân.",
+    content: "Ông từ từ đứng lên, cúi đầu xin lỗi mọi người và cam kết sẽ sửa chữa sai lầm, lấy lại niềm tin từ dân.",
     image: "/pages/page6.png",
     audio: "Ông mời người phụ nữ vào, cùng nhau xem xét lại hồ sơ trong một không khí ôn hòa và đầy tinh thần trách nhiệm. Từ đó, ông luôn ghi nhớ lời dạy của Bác Hồ, rằng cán bộ, công chức phải là người đầy tớ thật trung thành của nhân dân."
   },
@@ -57,50 +65,112 @@ const pages = [
     id: 7,
     type: "end",
     title: "",
-    content: "Câu chuyện về Chiếc ghế và Lòng dân là một hình ảnh sống động về căn bệnhquan cách mạng biểu hiện của chủ nghĩa cá nhân và quan liêu trong bộ máy công quyền.",
+    content: "Câu chuyện về, Chiếc ghế và Lòng dân, là một hình ảnh sống động về căn bệnh làm quan tự cao tự đại, biểu hiện của chủ nghĩa cá nhân và quan liêu trong bộ máy công quyền.",
     image: "/pages/end.png",
     audio: "Câu chuyện về Chiếc ghế và Lòng dân là một hình ảnh sống động về căn bệnhquan cách mạng biểu hiện của chủ nghĩa cá nhân và quan liêu trong bộ máy công quyền. Quyền lực thuộc về Nhân dân: Chiếc ghế lãnh đạo chỉ là sự ủy thác nhất thời. Sức mạnh thực sự của người cán bộ không nằm ở vị trí hay chức vụ, mà ở sự tín nhiệm, đồng lòng của nhân dân. Mất lòng dân là mất tất cả, bởi lẽ Dân là gốc"
   }
 ];
 
 // Component cho mỗi trang sách
-const Page = forwardRef(({ pageData }, ref) => {
+const Page = forwardRef(({ pageData, onPlayAudio }, ref) => {
   return (
     <div ref={ref} className="page-content">
-      <div className={`h-full w-full p-8 flex flex-col justify-center items-center text-center ${pageData.type === 'cover'
-        ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white'
-        : pageData.type === 'end'
-          ? 'bg-gradient-to-br from-green-500 to-teal-600 text-white'
-          : 'bg-white'
-        }`}>
+      <div
+        className={`h-full w-full p-8 flex flex-col justify-center items-center text-center ${
+          pageData.type === "cover"
+            ? "bg-gradient-to-br from-primary to-accent text-white"
+            : pageData.type === "end"
+            ? "bg-gradient-to-br from-accent to-primary text-white"
+            : "bg-[#FDF3E3]"
+        }`}
+      >
         <div className="mb-4 w-full max-w-xs">
           <img
             src={pageData.image}
             alt={pageData.title}
             className="w-full h-auto object-contain rounded-lg"
+            draggable={false}
           />
         </div>
 
-        <h2 className={`text-2xl sm:text-3xl font-bold mb-3 ${pageData.type === 'cover' || pageData.type === 'end'
-          ? 'text-white'
-          : 'text-gray-800'
-          }`}>
+        <h2
+          className={`text-2xl sm:text-3xl font-bold mb-3 ${
+            pageData.type === "cover" || pageData.type === "end"
+              ? "text-white"
+              : "text-slate-900"
+          }`}
+        >
           {pageData.title}
         </h2>
 
         {pageData.subtitle && (
-          <p className="text-lg text-white/90 mb-3">
+          <p className="text-base sm:text-lg text-white/90 mb-3 max-w-xl">
             {pageData.subtitle}
           </p>
         )}
 
         {pageData.content && (
-          <p className={`text-base sm:text-lg leading-relaxed max-w-md ${pageData.type === 'end'
-            ? 'text-white/95'
-            : 'text-gray-700'
-            }`}>
+          <p
+            className={`text-base sm:text-lg leading-relaxed max-w-md ${
+              pageData.type === "end"
+                ? "text-white/95"
+                : "text-muted-slate"
+            }`}
+          >
             {pageData.content}
           </p>
+        )}
+
+        {/* Nút audio cho từng trang */}
+        {pageData.audio && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              // chặn luôn native event để HTMLFlipBook không nhận click
+              if (e.nativeEvent && e.nativeEvent.stopImmediatePropagation) {
+                e.nativeEvent.stopImmediatePropagation();
+              }
+              onPlayAudio && onPlayAudio(pageData.id);
+            }}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (e.nativeEvent && e.nativeEvent.stopImmediatePropagation) {
+                e.nativeEvent.stopImmediatePropagation();
+              }
+            }}
+            onMouseUp={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (e.nativeEvent && e.nativeEvent.stopImmediatePropagation) {
+                e.nativeEvent.stopImmediatePropagation();
+              }
+            }}
+            onTouchStart={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (e.nativeEvent && e.nativeEvent.stopImmediatePropagation) {
+                e.nativeEvent.stopImmediatePropagation();
+              }
+            }}
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (e.nativeEvent && e.nativeEvent.stopImmediatePropagation) {
+                e.nativeEvent.stopImmediatePropagation();
+              }
+            }}
+            className={`mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-colors ${
+              pageData.type === "cover" || pageData.type === "end"
+                ? "bg-white/10 text-white hover:bg-white/20"
+                : "bg-primary/10 text-primary hover:bg-primary/20"
+            }`}
+          >
+            <span>🔊</span>
+            <span>Nghe trang này</span>
+          </button>
         )}
       </div>
     </div>
@@ -111,439 +181,297 @@ Page.displayName = "Page";
 
 export default function StoryFlipbook() {
   const [currentPage, setCurrentPage] = useState(0);
-  const [autoPlay, setAutoPlay] = useState(false);
-  const [isReading, setIsReading] = useState(false);
-  const [currentReadingPage, setCurrentReadingPage] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false); // đang phát audio thủ công
+  const [isAuto, setIsAuto] = useState(false); // chế độ tự động đọc & lật
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const bookRef = useRef(null);
-  const utteranceRef = useRef(null);
-  const timeoutRef = useRef(null);
+  const audioRef = useRef(null);
+  const autoRef = useRef(false);
   const isFlippingRef = useRef(false);
-  const readingStateRef = useRef({ pageIndex: 0, stage: 'first' }); // 'first', 'second', 'done'
 
-  const speak = (text, pageNum) => {
-    if ('speechSynthesis' in window) {
-      // Cancel any ongoing speech
-      window.speechSynthesis.cancel();
+  // Map trang -> file audio tương ứng
+  const audioMap = {
+    0: coverAudio,
+    1: page1Audio,
+    2: page2Audio,
+    3: page3Audio,
+    4: page4Audio,
+    5: page5Audio,
+    6: page6Audio,
+    7: endAudio,
+  };
+  const coverImage = pages[0].image;
 
-      if (pageNum !== undefined) {
-        setCurrentReadingPage(pageNum);
-      }
-
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'vi-VN';
-      utterance.rate = 0.9;
-      utterance.pitch = 1;
-
-      utteranceRef.current = utterance;
-      setIsReading(true);
-
-      utterance.onend = () => {
-        setIsReading(false);
-      };
-
-      utterance.onerror = () => {
-        setIsReading(false);
-      };
-
-      window.speechSynthesis.speak(utterance);
+  const stopAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
     }
+    setIsPlaying(false);
   };
 
-  const stopSpeech = () => {
-    if (window.speechSynthesis) {
-      window.speechSynthesis.cancel();
-      setIsReading(false);
+  const playPageAudio = (pageIndex, { onEnded } = {}) => {
+    const src = audioMap[pageIndex];
+    if (!src) return;
+
+    // Dừng audio cũ nếu có
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
     }
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-  };
 
-  const readPagesAndFlip = async (pageIndex) => {
-    if (!autoPlay || isFlippingRef.current) return;
+    const audio = new Audio(src);
+    audioRef.current = audio;
+    setIsPlaying(true);
 
-    const isCover = pageIndex === 0;
-    const isLastPage = pageIndex === pages.length - 1;
-    let shouldStop = false;
-
-    // Hàm kiểm tra xem có nên dừng không
-    const checkStop = () => {
-      shouldStop = !autoPlay;
-      return shouldStop;
+    audio.onended = () => {
+      setIsPlaying(false);
+      if (onEnded) onEnded();
+    };
+    audio.onerror = () => {
+      setIsPlaying(false);
     };
 
-    if (isCover) {
-      // Đọc trang bìa (trang 1)
-      readingStateRef.current = { pageIndex, stage: 'first' };
-      speak(pages[pageIndex].audio, 0);
+    audio.play();
+  };
 
-      // Đợi đọc xong
-      await new Promise((resolve) => {
-        const checkSpeech = setInterval(() => {
-          if (!window.speechSynthesis.speaking || checkStop()) {
-            clearInterval(checkSpeech);
-            resolve();
-          }
-        }, 100);
-      });
+  const playCurrentPageAudio = () => {
+    // Đọc trang đang hiển thị (trang trái hoặc trang đơn)
+    playPageAudio(currentPage);
+  };
 
-      // Kiểm tra lại trước khi lật trang
-      if (checkStop()) return;
+  // Tự động đọc từ một trang nhất định và lật tới hết sách
+  const autoPlayFrom = (startIndex) => {
+    if (!autoRef.current) return;
+    if (startIndex >= pages.length) {
+      autoRef.current = false;
+      setIsAuto(false);
+      return;
+    }
 
-      // Lật sang trang 1 (sẽ hiển thị trang 2-3)
-      timeoutRef.current = setTimeout(() => {
-        if (bookRef.current && !checkStop()) {
+    playPageAudio(startIndex, {
+      onEnded: () => {
+        if (!autoRef.current) return;
+        const nextIndex = startIndex + 1;
+
+        // Lật sang trang tiếp theo nếu còn
+        if (nextIndex < pages.length && bookRef.current) {
           isFlippingRef.current = true;
           bookRef.current.pageFlip().flipNext();
         }
-      }, 1000);
-    } else if (isLastPage) {
-      // Đọc trang cuối
-      readingStateRef.current = { pageIndex, stage: 'first' };
-      speak(pages[pageIndex].audio, pageIndex);
 
-      await new Promise((resolve) => {
-        const checkSpeech = setInterval(() => {
-          if (!window.speechSynthesis.speaking || checkStop()) {
-            clearInterval(checkSpeech);
-            resolve();
-          }
-        }, 100);
-      });
+        // Chờ lật trang xong rồi đọc trang kế tiếp
+        setTimeout(() => {
+          isFlippingRef.current = false;
+          autoPlayFrom(nextIndex);
+        }, 900);
+      },
+    });
+  };
+
+  const toggleAuto = () => {
+    if (isAuto) {
+      // Tắt chế độ auto
+      autoRef.current = false;
+      setIsAuto(false);
+      stopAudio();
     } else {
-      // Các trang giữa: khi lật từ trang bìa, currentPage sẽ là 1
-      // Khi hiển thị trang 2-3, currentPage = 1 (trang phải là 1, trang trái là 2)
-      // Cần đọc trang 1 (index 1) và trang 2 (index 2)
-      if (pageIndex === 1) {
-        // Kiểm tra xem có đang ở giữa chừng không
-        const shouldReadFirst = readingStateRef.current.pageIndex !== pageIndex || readingStateRef.current.stage === 'first';
-
-        if (shouldReadFirst) {
-          // Đọc trang 2 (index 1)
-          readingStateRef.current = { pageIndex, stage: 'first' };
-          speak(pages[pageIndex].audio, pageIndex);
-
-          await new Promise((resolve) => {
-            const checkSpeech = setInterval(() => {
-              if (!window.speechSynthesis.speaking) {
-                clearInterval(checkSpeech);
-                resolve();
-              }
-              if (checkStop()) {
-                clearInterval(checkSpeech);
-                resolve();
-              }
-            }, 100);
-          });
-
-          if (checkStop()) return;
-
-          // Delay giữa 2 trang
-          await new Promise(resolve => setTimeout(resolve, 500));
-
-          if (checkStop()) return;
-        }
-
-        if (checkStop()) return;
-
-        // Đọc trang 3 (index 2)
-        if (pageIndex + 1 < pages.length && !pages[pageIndex + 1].type) {
-          if (checkStop()) return; // Kiểm tra lại trước khi đọc
-
-          readingStateRef.current = { pageIndex, stage: 'second' };
-          speak(pages[pageIndex + 1].audio, pageIndex + 1);
-
-          await new Promise((resolve) => {
-            const checkSpeech = setInterval(() => {
-              if (!window.speechSynthesis.speaking || checkStop()) {
-                clearInterval(checkSpeech);
-                resolve();
-              }
-            }, 100);
-          });
-        }
-
-        if (checkStop()) return;
-
-        // Đánh dấu đã đọc xong
-        readingStateRef.current = { pageIndex, stage: 'done' };
-
-        // Lật sang spread tiếp theo (trang 4-5)
-        if (pageIndex + 1 < pages.length - 1) {
-          timeoutRef.current = setTimeout(() => {
-            if (bookRef.current && !checkStop()) {
-              isFlippingRef.current = true;
-              bookRef.current.pageFlip().flipNext();
-            }
-          }, 1000);
-        }
-      } else if (pageIndex === 3) {
-        // Kiểm tra xem có đang ở giữa chừng không
-        const shouldReadFirst = readingStateRef.current.pageIndex !== pageIndex || readingStateRef.current.stage === 'first';
-
-        if (shouldReadFirst) {
-          // Đọc trang 4 (index 3)
-          readingStateRef.current = { pageIndex, stage: 'first' };
-          speak(pages[pageIndex].audio, pageIndex);
-
-          await new Promise((resolve) => {
-            const checkSpeech = setInterval(() => {
-              if (!window.speechSynthesis.speaking) {
-                clearInterval(checkSpeech);
-                resolve();
-              }
-              if (checkStop()) {
-                clearInterval(checkSpeech);
-                resolve();
-              }
-            }, 100);
-          });
-
-          if (checkStop()) return;
-
-          // Delay giữa 2 trang
-          await new Promise(resolve => setTimeout(resolve, 500));
-
-          if (checkStop()) return;
-        }
-
-        if (checkStop()) return;
-
-        // Đọc trang 5 (index 4)
-        if (pageIndex + 1 < pages.length && !pages[pageIndex + 1].type) {
-          if (checkStop()) return; // Kiểm tra lại trước khi đọc
-
-          readingStateRef.current = { pageIndex, stage: 'second' };
-          speak(pages[pageIndex + 1].audio, pageIndex + 1);
-
-          await new Promise((resolve) => {
-            const checkSpeech = setInterval(() => {
-              if (!window.speechSynthesis.speaking || checkStop()) {
-                clearInterval(checkSpeech);
-                resolve();
-              }
-            }, 100);
-          });
-        }
-
-        if (checkStop()) return;
-
-        // Đánh dấu đã đọc xong
-        readingStateRef.current = { pageIndex, stage: 'done' };
-
-        // Lật sang spread tiếp theo (trang 6-7)
-        if (pageIndex + 1 < pages.length - 1) {
-          timeoutRef.current = setTimeout(() => {
-            if (bookRef.current && !checkStop()) {
-              isFlippingRef.current = true;
-              bookRef.current.pageFlip().flipNext();
-            }
-          }, 1000);
-        }
-      } else if (pageIndex === 5) {
-        // Kiểm tra xem có đang ở giữa chừng không
-        const shouldReadFirst = readingStateRef.current.pageIndex !== pageIndex || readingStateRef.current.stage === 'first';
-
-        if (shouldReadFirst) {
-          // Đọc trang 6 (index 5)
-          readingStateRef.current = { pageIndex, stage: 'first' };
-          speak(pages[pageIndex].audio, pageIndex);
-
-          await new Promise((resolve) => {
-            const checkSpeech = setInterval(() => {
-              if (!window.speechSynthesis.speaking) {
-                clearInterval(checkSpeech);
-                resolve();
-              }
-              if (checkStop()) {
-                clearInterval(checkSpeech);
-                resolve();
-              }
-            }, 100);
-          });
-
-          if (checkStop()) return;
-
-          // Delay giữa 2 trang
-          await new Promise(resolve => setTimeout(resolve, 500));
-
-          if (checkStop()) return;
-        }
-
-        if (checkStop()) return;
-
-        // Đọc trang 7 (index 6)
-        if (pageIndex + 1 < pages.length && !pages[pageIndex + 1].type) {
-          if (checkStop()) return; // Kiểm tra lại trước khi đọc
-
-          readingStateRef.current = { pageIndex, stage: 'second' };
-          speak(pages[pageIndex + 1].audio, pageIndex + 1);
-
-          await new Promise((resolve) => {
-            const checkSpeech = setInterval(() => {
-              if (!window.speechSynthesis.speaking || checkStop()) {
-                clearInterval(checkSpeech);
-                resolve();
-              }
-            }, 100);
-          });
-        }
-
-        if (checkStop()) return;
-
-        // Đánh dấu đã đọc xong
-        readingStateRef.current = { pageIndex, stage: 'done' };
-
-        // Lật sang trang cuối (trang 8)
-        if (pageIndex + 1 < pages.length - 1) {
-          timeoutRef.current = setTimeout(() => {
-            if (bookRef.current && !checkStop()) {
-              isFlippingRef.current = true;
-              bookRef.current.pageFlip().flipNext();
-            }
-          }, 1000);
-        }
-      }
+      autoRef.current = true;
+      setIsAuto(true);
+      stopAudio();
+      autoPlayFrom(currentPage);
     }
   };
 
-  useEffect(() => {
-    if (autoPlay) {
-      // Delay nhỏ để đảm bảo state đã ổn định sau khi lật
-      const timer = setTimeout(() => {
-        if (!isFlippingRef.current) {
-          readPagesAndFlip(currentPage);
-        }
-      }, 200);
+  // Tính trang trái/phải đang hiển thị (ước lượng)
+  const getVisiblePages = () => {
+    if (currentPage === 0) return [0, 0];
+    const left = currentPage;
+    const right = left + 1 < pages.length ? left + 1 : left;
+    return [left, right];
+  };
 
-      return () => {
-        clearTimeout(timer);
-        stopSpeech();
-      };
-    } else {
-      return () => {
-        stopSpeech();
-      };
-    }
-  }, [currentPage, autoPlay]);
+  const handlePlayLeftPage = () => {
+    const [left] = getVisiblePages();
+    // tắt auto nếu đang bật
+    autoRef.current = false;
+    setIsAuto(false);
+    playPageAudio(left);
+  };
+
+  const handlePlayRightPage = () => {
+    const [, right] = getVisiblePages();
+    autoRef.current = false;
+    setIsAuto(false);
+    playPageAudio(right);
+  };
+
+  const handlePlayForPage = (pageIndex) => {
+    autoRef.current = false;
+    setIsAuto(false);
+    playPageAudio(pageIndex);
+  };
 
   const onFlip = (e) => {
     const newPage = e.data;
-    stopSpeech();
-
-    // Đợi một chút trước khi update state
-    setTimeout(() => {
-      isFlippingRef.current = false;
-      setCurrentPage(newPage);
-    }, 50);
+    stopAudio();
+    setCurrentPage(newPage);
   };
 
-  const toggleAutoPlay = () => {
-    const newAutoPlayState = !autoPlay;
-    setAutoPlay(newAutoPlayState);
-
-    if (!newAutoPlayState) {
-      // Chuyển sang chế độ thủ công -> dừng đọc
-      stopSpeech();
-    } else {
-      // Chuyển sang chế độ tự động -> bắt đầu đọc từ trang hiện tại
-      if (!isFlippingRef.current) {
-        readPagesAndFlip(currentPage);
-      }
-    }
-  };
+  useEffect(() => {
+    return () => {
+      stopAudio();
+    };
+  }, []);
 
   return (
     <section className="mt-10 pb-20">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-4xl mx-auto text-center">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-3xl section-title font-bold mb-8 text-center"
+          className="text-3xl section-title font-bold mb-4"
         >
           Flipbook câu chuyện
         </motion.h1>
+        <p className="text-sm sm:text-base text-muted-slate mb-6">
+          Trải nghiệm câu chuyện "Chiếc ghế và lòng dân" dưới dạng sách lật,
+          kèm giọng đọc từng trang. Bấm nút bên dưới để mở sách.
+        </p>
 
-        {/* Progress bar */}
-        <div className="mb-6 max-w-4xl mx-auto">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm text-muted-slate">
-              Trang {currentPage + 1} / {pages.length}
-            </span>
-            <button
-              onClick={toggleAutoPlay}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${autoPlay
-                ? 'bg-blue-500 text-white hover:bg-blue-600'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-            >
-              {autoPlay ? '🔊 Tự động đọc' : '⏸️ Chế độ thủ công'}
-            </button>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div
-              className="bg-blue-500 h-2 rounded-full transition-all duration-300"
-              style={{ width: `${((currentPage + 1) / pages.length) * 100}%` }}
-            />
-          </div>
-
-          {isReading && (
-            <div className="mt-3 flex justify-center items-center gap-2 text-sm text-gray-600">
-              <span className="animate-pulse">🔊</span>
-              <span>Đang đọc trang {currentReadingPage + 1}...</span>
-            </div>
-          )}
+        <div className="mx-auto mb-4 max-w-xs sm:max-w-sm rounded-2xl overflow-hidden shadow-soft-lg border border-white/60 bg-white">
+          <img
+            src={coverImage}
+            alt="Bìa flipbook Chiếc ghế và lòng dân"
+            className="w-full h-auto object-cover"
+          />
         </div>
 
-        {/* Flipbook container */}
-        <div className="flex justify-center items-center">
-          <HTMLFlipBook
-            ref={bookRef}
-            width={500}
-            height={700}
-            size="stretch"
-            minWidth={315}
-            maxWidth={1000}
-            minHeight={400}
-            maxHeight={1533}
-            maxShadowOpacity={0.5}
-            showCover={true}
-            mobileScrollSupport={true}
-            onFlip={onFlip}
-            className="flipbook-container"
-            style={{}}
-            startPage={0}
-            drawShadow={true}
-            flippingTime={800}
-            usePortrait={true}
-            startZIndex={0}
-            autoSize={true}
-            clickEventForward={true}
-            useMouseEvents={true}
-            swipeDistance={30}
-            showPageCorners={true}
-            disableFlipByClick={false}
-          >
-            {pages.map((page) => (
-              <Page key={page.id} pageData={page} />
-            ))}
-          </HTMLFlipBook>
-        </div>
-
-        <div className="mt-6 text-center text-sm text-gray-500">
-          💡 Nhấp vào cạnh phải/trái của sách hoặc kéo để lật trang
-        </div>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="px-5 py-2.5 rounded-lg bg-primary text-white hover:bg-primary/90 shadow-soft-lg text-sm font-medium"
+        >
+          📖 Mở flipbook
+        </button>
       </div>
 
-      <style jsx global>{`
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="fixed inset-0 z-40 bg-black/40 flex items-center justify-center px-3 sm:px-6"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 30, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 20, scale: 0.96 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              className="relative max-w-6xl w-full bg-cream rounded-2xl shadow-2xl border border-white/60 p-4 sm:p-6"
+            >
+              <button
+                onClick={() => {
+                  setIsModalOpen(false);
+                  autoRef.current = false;
+                  setIsAuto(false);
+                  stopAudio();
+                }}
+                className="absolute right-3 top-3 text-sm text-muted-slate hover:text-slate-900"
+              >
+                ✕
+              </button>
+
+              {/* Thanh tiến trình + nút auto */}
+              <div className="mb-4 max-w-4xl mx-auto">
+                <div className="flex justify-between items-center mb-2 gap-2 text-xs sm:text-sm">
+                  <span className="text-muted-slate">
+                    Trang {currentPage + 1} / {pages.length}
+                  </span>
+                  <button
+                    onClick={toggleAuto}
+                    className={`px-3 py-1.5 rounded-lg font-medium transition-colors ${
+                      isAuto
+                        ? "bg-white text-muted-slate hover:bg-slate-100"
+                        : "bg-primary text-white hover:bg-primary/90"
+                    }`}
+                  >
+                    {isAuto ? "⏸️ Dừng auto" : "▶️ Auto đọc & lật"}
+                  </button>
+                </div>
+                <div className="w-full bg-white/60 rounded-full h-1.5">
+                  <div
+                    className="bg-primary h-1.5 rounded-full transition-all duration-300"
+                    style={{
+                      width: `${((currentPage + 1) / pages.length) * 100}%`,
+                    }}
+                  />
+                </div>
+
+                {isPlaying && (
+                  <div className="mt-2 flex justify-center items-center gap-2 text-xs sm:text-sm text-muted-slate">
+                    <span className="animate-pulse">🔊</span>
+                    <span>Đang phát audio...</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Flipbook container */}
+              <div className="flex justify-center items-center">
+                <HTMLFlipBook
+                  ref={bookRef}
+                  width={500}
+                  height={700}
+                  size="stretch"
+                  minWidth={315}
+                  maxWidth={1000}
+                  minHeight={400}
+                  maxHeight={1533}
+                  maxShadowOpacity={0.2}
+                  showCover={true}
+                  mobileScrollSupport={true}
+                  onFlip={onFlip}
+                  className="flipbook-container"
+                  startPage={0}
+                  drawShadow={true}
+                  flippingTime={800}
+                  usePortrait={true}
+                  startZIndex={0}
+                  autoSize={true}
+                  clickEventForward={true}
+                  useMouseEvents={true}
+                  swipeDistance={30}
+                  showPageCorners={true}
+                  disableFlipByClick={false}
+                >
+                  {pages.map((page) => (
+                    <Page
+                      key={page.id}
+                      pageData={page}
+                      onPlayAudio={handlePlayForPage}
+                    />
+                  ))}
+                </HTMLFlipBook>
+              </div>
+
+              <div className="mt-4 text-center text-xs sm:text-sm text-muted-slate">
+                💡 Nhấp vào cạnh phải/trái của sách hoặc kéo để lật trang. Bấm
+                "Nghe trang này" ở cuối mỗi trang để phát audio tương ứng.
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <style>{`
         .flipbook-container {
           margin: 0 auto;
         }
-        
+
         .page-content {
-          box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-          background-color: white;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+          background-color: #fdf3e3;
         }
 
         .stf__wrapper {
@@ -556,7 +484,7 @@ export default function StoryFlipbook() {
           justify-content: center;
         }
       `}</style>
-    </section >
+    </section>
   );
 }
 
