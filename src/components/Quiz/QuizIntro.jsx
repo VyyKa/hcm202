@@ -2,7 +2,12 @@ import React from "react"
 import { motion } from "framer-motion"
 import { Play, BookOpen, Clock, Target, Lightbulb } from "lucide-react"
 
-export default function QuizIntro({ totalQuestions, onStart }) {
+export default function QuizIntro({
+  totalQuestions,
+  onStart,
+  playerName,
+  onChangePlayerName,
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -33,6 +38,23 @@ export default function QuizIntro({ totalQuestions, onStart }) {
           <p className="text-2xl font-bold text-slate-900">4 ~ 7</p>
           <p className="text-sm text-muted-slate">Lựa chọn/câu</p>
         </div>
+      </div>
+
+      {/* Player name input */}
+      <div className="mb-6">
+        <label className="block text-sm font-semibold text-slate-900 mb-1">
+          Tên người chơi
+        </label>
+        <input
+          type="text"
+          value={playerName}
+          onChange={(e) => onChangePlayerName?.(e.target.value)}
+          placeholder="Nhập tên của bạn..."
+          className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
+        />
+        <p className="mt-1 text-xs text-muted-slate">
+          Nếu để trống, kết quả sẽ được lưu với tên &quot;Khách&quot;.
+        </p>
       </div>
 
       {/* Instructions */}

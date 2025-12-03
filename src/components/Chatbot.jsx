@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, Bot } from "lucide-react";
+import { MessageCircle, X, Send, Bot, BookOpen } from "lucide-react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const SYSTEM_PROMPT = `Bạn là trợ lý AI chuyên về môn học "Tư tưởng Hồ Chí Minh về Nhà nước" (HCM202).
@@ -186,32 +186,25 @@ export default function Chatbot() {
       {/* Nút floating */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary text-white shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center"
+        className={`fixed bottom-6 right-6 z-50 bg-primary text-white shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 ease-out ${
+          isOpen ? "w-14 h-14 rounded-full p-0" : "rounded-full gap-2 pl-4 pr-5 py-2"
+        }`}
         whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        aria-label="Mở chatbot"
+        whileTap={{ scale: 0.97 }}
+        aria-label="Mở Trợ lý Tư tưởng Hồ Chí Minh"
       >
-        <AnimatePresence mode="wait">
-          {isOpen ? (
-            <motion.div
-              key="close"
-              initial={{ rotate: -90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
-            >
-              <X size={24} />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="open"
-              initial={{ rotate: 90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: -90, opacity: 0 }}
-            >
-              <MessageCircle size={24} />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {isOpen ? (
+          <X size={18} />
+        ) : (
+          <div className="flex items-center gap-2">
+            <div className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center">
+              <BookOpen size={18} className="text-white" />
+            </div>
+            <span className="text-sm font-semibold whitespace-nowrap">
+              Trợ lý Tư tưởng Hồ Chí Minh
+            </span>
+          </div>
+        )}
       </motion.button>
 
       {/* Khung chat */}

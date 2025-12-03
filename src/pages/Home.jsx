@@ -78,14 +78,20 @@ export default function Home() {
   return (
     <>
       {/* HERO */}
-      <section className="min-h-[68vh] flex items-center" aria-label="Hero">
+      <section
+        className="py-12 sm:py-16 lg:py-24 flex items-center"
+        aria-label="Hero"
+      >
         <motion.div
           initial="hidden"
           animate="show"
           variants={container}
-          className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center"
+          className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center"
         >
-          <motion.div variants={fadeUp} className="py-12">
+          <motion.div
+            variants={fadeUp}
+            className="py-6 sm:py-8 lg:py-12 text-center sm:text-left"
+          >
             <h1
               className="text-4xl sm:text-5xl lg:text-6xl section-title leading-tight font-bold"
               style={{ color: "#1A1A1A" }}
@@ -97,7 +103,7 @@ export default function Home() {
               <br />
               về Nhà nước
             </h1>
-            <p className="mt-6 text-lg sm:text-xl max-w-xl">
+            <p className="mt-6 text-base sm:text-lg text-muted-slate max-w-2xl mx-auto sm:mx-0">
               <span className="font-semibold">
                 Nhà nước của Dân, do Dân, vì Dân.
               </span>{" "}
@@ -105,35 +111,38 @@ export default function Home() {
               công nhân, do Đảng Cộng sản Việt Nam lãnh đạo, nhưng đồng thời
               thống nhất chặt chẽ với tính nhân dân và tính dân tộc.
             </p>
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-col sm:flex-row sm:flex-wrap gap-3 w-full max-w-md sm:max-w-none mx-auto sm:mx-0">
               <button
                 onClick={() => {
-                  const element = document.getElementById('section1');
+                  const element = document.getElementById("section1")
                   if (element) {
-                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    element.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    })
                   }
                 }}
-                className="px-4 py-2 rounded-lg bg-primary text-white shadow-sm hover:bg-primary/90 transition-colors duration-200"
+                className="px-4 py-2 rounded-lg bg-primary text-white shadow-sm hover:bg-primary/90 transition-colors duration-200 w-full sm:w-auto justify-center inline-flex items-center"
               >
                 Khám phá
               </button>
               <a
                 href="/game"
-                className="px-4 py-2 rounded-lg border border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200"
+                className="px-4 py-2 rounded-lg border border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200 w-full sm:w-auto inline-flex items-center justify-center"
               >
                 Trò chơi
               </a>
               <a
                 href="/flipbook"
-                className="px-4 py-2 rounded-lg border border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200"
+                className="px-4 py-2 rounded-lg border border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200 w-full sm:w-auto inline-flex items-center justify-center"
               >
                 Flipbook câu chuyện
               </a>
             </div>
           </motion.div>
 
-          <motion.div variants={fadeUp} className="py-12">
-            <div className="w-full h-64 sm:h-80 rounded-2xl shadow-soft-lg overflow-hidden">
+          <motion.div variants={fadeUp} className="py-6 sm:py-8 lg:py-12">
+            <div className="w-full max-w-md lg:max-w-full mx-auto lg:mx-0 h-64 sm:h-80 rounded-2xl shadow-soft-lg overflow-hidden">
               <img
                 src={anhbacho}
                 alt="Hình ảnh Bác Hồ làm việc"
@@ -197,7 +206,7 @@ export default function Home() {
       </section> */}
 
       {/* SECTION 1 - Nhà nước Dân chủ */}
-      <section id="section1" className="mt-12">
+      <section id="section1" className="mt-12 scroll-mt-28">
         <motion.div
           initial="hidden"
           whileInView="show"
@@ -280,7 +289,7 @@ export default function Home() {
       </section>
 
       {/* SECTION 2 - Nhà nước Pháp quyền (Timeline) */}
-      <section id="section2" className="mt-16">
+      <section id="section2" className="mt-16 scroll-mt-28">
         <motion.div
           initial="hidden"
           whileInView="show"
@@ -359,7 +368,7 @@ export default function Home() {
       </section>
 
       {/* SECTION 3 - Trong sạch, vững mạnh (2x2 grid) */}
-      <section id="section3" className="mt-16">
+      <section id="section3" className="mt-16 scroll-mt-28">
         <motion.div
           initial="hidden"
           whileInView="show"

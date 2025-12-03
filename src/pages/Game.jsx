@@ -6,6 +6,8 @@ import QuizIntro from "../components/Quiz/QuizIntro"
 import QuizCard from "../components/Quiz/QuizCard"
 import QuizResult from "../components/Quiz/QuizResult"
 import QuizSidebar from "../components/Quiz/QuizSidebar"
+import GameResultsTable from "../components/Quiz/GameResultsTable"
+import { supabase } from "../lib/supabaseClient"
 
 const fadeUp = {
   hidden: { opacity: 0, y: 18 },
@@ -23,6 +25,8 @@ export default function Game() {
   const [score, setScore] = useState(0)
   const [elapsedTime, setElapsedTime] = useState(0)
   const [randomQuestions, setRandomQuestions] = useState([])
+  const [playerName, setPlayerName] = useState("")
+  const [showResultsModal, setShowResultsModal] = useState(false)
 
   // Hàm shuffle mảng (Fisher-Yates algorithm)
   const shuffleArray = (array) => {
@@ -50,6 +54,25 @@ export default function Game() {
     }
     return () => clearInterval(interval)
   }, [gameState])
+
+  const saveResult = async (finalScore, finalElapsedTime) => {
+    try {
+      const nameToSave = playerName.trim() || "Khách"
+
+      const { error } = await supabase.from("game_results").insert({
+        player_name: nameToSave,
+        score: finalScore,
+        total_questions: totalQuestions,
+        elapsed_time: finalElapsedTime,
+      })
+
+      if (error) {
+        console.error("Lỗi lưu kết quả Supabase:", error.message)
+      }
+    } catch (err) {
+      console.error("Lỗi ngoài ý muốn khi lưu kết quả:", err)
+    }
+  }
 
   const handleStart = () => {
     const newQuestions = getRandomQuestions()
@@ -87,6 +110,8 @@ export default function Game() {
       setShowResult(false)
     } else {
       setGameState("result")
+      // lưu kết quả lên Supabase khi hoàn thành bài
+      saveResult(score, elapsedTime)
     }
   }
 
@@ -136,6 +161,23 @@ export default function Game() {
               cải tiến, trực quan và thân thiện trên máy tính lẫn thiết bị di
               động.
             </p>
+            <div className="mt-4 flex flex-wrap justify-center gap-3">
+              {gameState !== "intro" && (
+                <button
+                  onClick={handleRestart}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-primary text-primary hover:bg-primary hover:text-white transition-colors text-sm"
+                >
+                  <Trophy size={16} className="hidden xs:inline-block" />
+                  <span>Làm lại từ đầu</span>
+                </button>
+              )}
+              <button
+                onClick={() => setShowResultsModal(true)}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white hover:bg-primary/90 transition-colors text-sm"
+              >
+                <span>Xem bảng kết quả</span>
+              </button>
+            </div>
           </motion.div>
 
           <motion.div variants={fadeUp}>
@@ -145,6 +187,8 @@ export default function Game() {
                   key="intro"
                   totalQuestions={totalQuestions}
                   onStart={handleStart}
+                  playerName={playerName}
+                  onChangePlayerName={setPlayerName}
                 />
               )}
 
@@ -190,6 +234,37 @@ export default function Game() {
           />
         </div>
       </motion.div>
+
+      {/* Popup bảng kết quả người chơi */}
+      <AnimatePresence>
+        {showResultsModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm flex items-center justify-center px-3 sm:px-6"
+            onClick={() => setShowResultsModal(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 20, scale: 0.97 }}
+              transition={{ duration: 0.2 }}
+              className="relative max-w-5xl w-full max-h-[90vh] overflow-y-auto bg-cream rounded-2xl shadow-2xl border border-white/60 p-4 sm:p-6"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setShowResultsModal(false)}
+                className="absolute right-3 top-3 text-xs text-muted-slate hover:text-slate-900"
+              >
+                ✕
+              </button>
+              <GameResultsTable />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }

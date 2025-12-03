@@ -1,13 +1,24 @@
-import React, { useRef, useState } from "react"
-import { Outlet, NavLink, useLocation } from "react-router-dom"
-import { Play, Pause, BookOpen, Users, Mail, Heart } from "lucide-react"
+import React, { useEffect, useRef, useState } from "react"
+import { Outlet, NavLink, useLocation, useNavigate } from "react-router-dom"
+import {
+  Play,
+  Pause,
+  BookOpen,
+  Users,
+  Mail,
+  Heart,
+  Menu,
+  X,
+} from "lucide-react"
 import icon from "../assets/icon.jpg"
 import Chatbot from "../components/Chatbot"
 
 export default function MainLayout() {
   const audioRef = useRef(null)
   const [playing, setPlaying] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
 
   function toggleAudio() {
     const a = audioRef.current
@@ -28,16 +39,44 @@ export default function MainLayout() {
     }
   }
 
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [location.pathname])
+
   const linkBase =
     "text-sm px-3 py-1.5 rounded-lg hover:bg-white/70 transition inline-flex items-center"
+  const navLinks = [
+    { to: "/", label: "Trang chính" },
+    { to: "/learn-more", label: "Tìm hiểu thêm" },
+    { to: "/game", label: "Trò chơi" },
+    { to: "/flipbook", label: "Flipbook" },
+  ]
+
+  const renderLinks = (extraClasses = "") =>
+    navLinks.map((link) => (
+      <NavLink
+        key={link.to}
+        to={link.to}
+        className={({ isActive }) =>
+          `${linkBase} ${extraClasses} ${isActive ? "bg-white shadow-sm" : ""}`
+        }
+      >
+        {link.label}
+      </NavLink>
+    ))
 
   return (
     <div className="min-h-screen bg-cream text-slate-900 antialiased flex flex-col">
       <audio ref={audioRef} loop src="/nhac.mp3" />
 
-      <header className="sticky top-0 z-30 backdrop-blur-sm bg-white/40 border-b border-white/60">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+      <header className="sticky top-0 z-30 backdrop-blur-sm bg-white/70 border-b border-white/60">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            className="flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-md"
+            aria-label="Về trang chính"
+          >
             <div className="w-10 h-10 rounded-md bg-primary flex items-center justify-center overflow-hidden">
               <img
                 src={icon}
@@ -45,68 +84,38 @@ export default function MainLayout() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div>
+            <div className="text-left">
               <div className="text-sm font-semibold">Tư tưởng Hồ Chí Minh</div>
               <div className="text-xs text-muted-slate">Về Nhà nước</div>
             </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <nav className="hidden sm:flex gap-1">
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  `${linkBase} ${isActive ? "bg-white shadow-sm" : ""}`
-                }
-              >
-                Trang chính
-              </NavLink>
-              <NavLink
-                to="/learn-more"
-                className={({ isActive }) =>
-                  `${linkBase} ${isActive ? "bg-white shadow-sm" : ""}`
-                }
-              >
-                Tìm hiểu thêm
-              </NavLink>
-              {/* <NavLink
-                to="/biography"
-                className={({ isActive }) =>
-                  `${linkBase} ${isActive ? "bg-white shadow-sm" : ""}`
-                }
-              >
-                Cuộc đời Bác Hồ
-              </NavLink> */}
-              <NavLink
-                to="/game"
-                className={({ isActive }) =>
-                  `${linkBase} ${isActive ? "bg-white shadow-sm" : ""}`
-                }
-              >
-                Trò chơi
-              </NavLink>
-              <NavLink
-                to="/flipbook"
-                className={({ isActive }) =>
-                  `${linkBase} ${isActive ? "bg-white shadow-sm" : ""}`
-                }
-              >
-                Flipbook
-              </NavLink>
-            </nav>
+          </button>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <nav className="hidden sm:flex gap-1">{renderLinks()}</nav>
             <button
               onClick={toggleAudio}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg border hover:shadow-sm transition"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg border hover:shadow-sm transition text-xs sm:text-sm"
             >
               {playing ? <Pause size={16} /> : <Play size={16} />}
-              <span className="text-sm">
-                {playing ? "Tạm dừng nhạc" : "Nghe nhạc"}
-              </span>
+              <span>{playing ? "Tạm dừng nhạc" : "Nghe nhạc"}</span>
+            </button>
+            <button
+              className="sm:hidden inline-flex items-center justify-center p-2 rounded-lg border hover:bg-white transition"
+              onClick={() => setMenuOpen((prev) => !prev)}
+              aria-label="Mở menu"
+              aria-expanded={menuOpen}
+            >
+              {menuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>
         </div>
+        {menuOpen && (
+          <div className="sm:hidden border-t border-white/60 bg-white/95 backdrop-blur px-4 pb-4 shadow-sm">
+            <div className="flex flex-col gap-2 pt-3">{renderLinks("w-full justify-center text-base")}</div>
+          </div>
+        )}
       </header>
 
-      <main className="flex-1 max-w-6xl mx-auto px-4 pb-20 w-full">
+      <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 pb-20 w-full">
         <Outlet />
       </main>
 

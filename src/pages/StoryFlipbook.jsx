@@ -76,7 +76,7 @@ const Page = forwardRef(({ pageData, onPlayAudio }, ref) => {
   return (
     <div ref={ref} className="page-content">
       <div
-        className={`h-full w-full p-8 flex flex-col justify-center items-center text-center ${
+        className={`h-full w-full p-5 sm:p-8 flex flex-col justify-center items-center text-center ${
           pageData.type === "cover"
             ? "bg-gradient-to-br from-primary to-accent text-white"
             : pageData.type === "end"
@@ -84,7 +84,7 @@ const Page = forwardRef(({ pageData, onPlayAudio }, ref) => {
             : "bg-[#FDF3E3]"
         }`}
       >
-        <div className="mb-4 w-full max-w-xs">
+        <div className="mb-4 w-full max-w-[180px] sm:max-w-xs">
           <img
             src={pageData.image}
             alt={pageData.title}
@@ -188,6 +188,19 @@ export default function StoryFlipbook() {
   const audioRef = useRef(null);
   const autoRef = useRef(false);
   const isFlippingRef = useRef(false);
+  const getBookDimensions = (width) => {
+    if (width < 360) return { bookWidth: 230, bookHeight: 340 };
+    if (width < 480) return { bookWidth: 270, bookHeight: 390 };
+    if (width < 768) return { bookWidth: 340, bookHeight: 500 };
+    if (width < 1024) return { bookWidth: 420, bookHeight: 600 };
+    return { bookWidth: 520, bookHeight: 720 };
+  };
+  const [bookSize, setBookSize] = useState(() => {
+    if (typeof window === "undefined") {
+      return { bookWidth: 520, bookHeight: 720 };
+    }
+    return getBookDimensions(window.innerWidth);
+  });
 
   // Map trang -> file audio tương ứng
   const audioMap = {
@@ -324,6 +337,14 @@ export default function StoryFlipbook() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setBookSize(getBookDimensions(window.innerWidth));
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const fadeUp = {
     hidden: { opacity: 0, y: 18 },
     show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
@@ -388,13 +409,20 @@ export default function StoryFlipbook() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
             className="fixed inset-0 z-40 bg-black/40 flex items-center justify-center px-3 sm:px-6"
+            onClick={() => {
+              setIsModalOpen(false);
+              autoRef.current = false;
+              setIsAuto(false);
+              stopAudio();
+            }}
           >
             <motion.div
               initial={{ opacity: 0, y: 30, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.96 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
-              className="relative max-w-6xl w-full bg-cream rounded-2xl shadow-2xl border border-white/60 p-4 sm:p-6"
+              className="relative max-w-6xl w-full max-h-[92vh] overflow-y-auto bg-cream rounded-2xl shadow-2xl border border-white/60 p-3 sm:p-6"
+              onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => {
@@ -446,13 +474,13 @@ export default function StoryFlipbook() {
               <div className="flex justify-center items-center">
                 <HTMLFlipBook
                   ref={bookRef}
-                  width={500}
-                  height={700}
+                  width={bookSize.bookWidth}
+                  height={bookSize.bookHeight}
                   size="stretch"
-                  minWidth={315}
-                  maxWidth={1000}
-                  minHeight={400}
-                  maxHeight={1533}
+                  minWidth={Math.max(bookSize.bookWidth - 60, 220)}
+                  maxWidth={bookSize.bookWidth + 220}
+                  minHeight={Math.max(bookSize.bookHeight - 80, 320)}
+                  maxHeight={bookSize.bookHeight + 220}
                   maxShadowOpacity={0.2}
                   showCover={true}
                   mobileScrollSupport={true}
