@@ -106,17 +106,22 @@ export default function Home() {
               thống nhất chặt chẽ với tính nhân dân và tính dân tộc.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <a
-                href="#section1"
-                className="px-4 py-2 rounded-lg bg-primary text-white shadow-sm"
+              <button
+                onClick={() => {
+                  const element = document.getElementById('section1');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }}
+                className="px-4 py-2 rounded-lg bg-primary text-white shadow-sm hover:bg-primary/90 transition-colors duration-200"
               >
                 Khám phá
-              </a>
+              </button>
               <a
                 href="/game"
                 className="px-4 py-2 rounded-lg border border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200"
               >
-                Trò chơi (sắp có)
+                Trò chơi
               </a>
               <a
                 href="/flipbook"
@@ -140,7 +145,7 @@ export default function Home() {
       </section>
 
       {/* SECTION 4 - Giới thiệu về Cuộc đời Bác Hồ */}
-      <section className="mt-16">
+      {/* <section className="mt-16">
         <motion.div
           initial="hidden"
           whileInView="show"
@@ -189,7 +194,7 @@ export default function Home() {
             </div>
           </motion.div>
         </motion.div>
-      </section>
+      </section> */}
 
       {/* SECTION 1 - Nhà nước Dân chủ */}
       <section id="section1" className="mt-12">

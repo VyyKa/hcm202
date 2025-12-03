@@ -68,14 +68,14 @@ export default function MainLayout() {
               >
                 Tìm hiểu thêm
               </NavLink>
-              <NavLink
+              {/* <NavLink
                 to="/biography"
                 className={({ isActive }) =>
                   `${linkBase} ${isActive ? "bg-white shadow-sm" : ""}`
                 }
               >
                 Cuộc đời Bác Hồ
-              </NavLink>
+              </NavLink> */}
               <NavLink
                 to="/game"
                 className={({ isActive }) =>

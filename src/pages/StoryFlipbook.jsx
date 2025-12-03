@@ -324,36 +324,61 @@ export default function StoryFlipbook() {
     };
   }, []);
 
+  const fadeUp = {
+    hidden: { opacity: 0, y: 18 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
+
+  const container = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.14,
+      },
+    },
+  };
+
   return (
     <section className="mt-10 pb-20">
-      <div className="max-w-4xl mx-auto text-center">
+      <motion.div
+        initial="hidden"
+        animate="show"
+        variants={container}
+        className="max-w-4xl mx-auto text-center"
+      >
         <motion.h1
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          variants={fadeUp}
           className="text-3xl section-title font-bold mb-4"
         >
           Flipbook câu chuyện
         </motion.h1>
-        <p className="text-sm sm:text-base text-muted-slate mb-6">
+        <motion.p
+          variants={fadeUp}
+          className="text-sm sm:text-base text-muted-slate mb-6"
+        >
           Trải nghiệm câu chuyện "Chiếc ghế và lòng dân" dưới dạng sách lật,
-          kèm giọng đọc từng trang. Bấm nút bên dưới để mở sách.
-        </p>
+          kèm giọng đọc từng trang để hiểu rõ hơn về quan điểm "Quan nhất thời, dân vạn đại". Bấm nút bên dưới để mở sách.
+        </motion.p>
 
-        <div className="mx-auto mb-4 max-w-xs sm:max-w-sm rounded-2xl overflow-hidden shadow-soft-lg border border-white/60 bg-white">
+        <motion.div
+          variants={fadeUp}
+          className="mx-auto mb-4 max-w-xs sm:max-w-sm rounded-2xl overflow-hidden shadow-soft-lg border border-white/60 bg-white"
+        >
           <img
             src={coverImage}
             alt="Bìa flipbook Chiếc ghế và lòng dân"
             className="w-full h-auto object-cover"
           />
-        </div>
+        </motion.div>
 
-        <button
+        <motion.button
+          variants={fadeUp}
           onClick={() => setIsModalOpen(true)}
-          className="px-5 py-2.5 rounded-lg bg-primary text-white hover:bg-primary/90 shadow-soft-lg text-sm font-medium"
+          className="px-5 py-2.5 rounded-lg bg-primary text-white hover:bg-primary/90 shadow-soft-lg text-sm font-medium transition-colors duration-200"
         >
           📖 Mở flipbook
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
 
       <AnimatePresence>
         {isModalOpen && (

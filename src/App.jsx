@@ -15,7 +15,7 @@ export default function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/learn-more" element={<LearnMore />} />
-          <Route path="/biography" element={<Biography />} />
+          {/* <Route path="/biography" element={<Biography />} /> */}
           <Route path="/game" element={<Game />} />
           <Route path="/flipbook" element={<StoryFlipbook />} />
         </Route>
