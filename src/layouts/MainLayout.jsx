@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react"
 import icon from "../assets/icon.jpg"
+import dangBg from "../assets/dang.png"
 import Chatbot from "../components/Chatbot"
 
 export default function MainLayout() {
@@ -66,10 +67,21 @@ export default function MainLayout() {
     ))
 
   return (
-    <div className="min-h-screen bg-cream text-slate-900 antialiased flex flex-col">
-      <audio ref={audioRef} loop src="/nhac.mp3" />
+    <div className="min-h-screen bg-cream text-slate-900 antialiased flex flex-col relative overflow-hidden">
+      {/* Background cố định với hình Đảng mờ mờ */}
+      <div
+        className="pointer-events-none fixed inset-0 z-0 flex justify-center"
+        aria-hidden="true"
+      >
+        <div
+          className="w-full max-w-5xl h-full opacity-[0.12] bg-center bg-no-repeat bg-contain"
+          style={{ backgroundImage: `url(${dangBg})` }}
+        />
+      </div>
 
-      <header className="sticky top-0 z-30 backdrop-blur-sm bg-white/70 border-b border-white/60">
+      <audio ref={audioRef} loop src="/nhac.mp3" className="relative z-10" />
+
+      <header className="sticky top-0 z-30 backdrop-blur-sm bg-white/70 border-b border-white/60 relative z-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
           <button
             type="button"
@@ -115,11 +127,11 @@ export default function MainLayout() {
         )}
       </header>
 
-      <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 pb-20 w-full">
+      <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 pb-20 w-full relative z-10">
         <Outlet />
       </main>
 
-      <footer className="mt-10 py-8">
+      <footer className="mt-10 py-8 relative z-10">
         <div className="border-t pt-6 border-white/60">
           <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
             {/* Cột 1: Dự án học thuật */}
@@ -198,7 +210,11 @@ export default function MainLayout() {
       </footer>
 
       {/* Chatbot: ẩn trên trang Trò chơi */}
-      {location.pathname !== "/game" && <Chatbot />}
+      {location.pathname !== "/game" && (
+        <div className="relative z-20">
+          <Chatbot />
+        </div>
+      )}
     </div>
   )
 }
